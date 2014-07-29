@@ -16,7 +16,10 @@ def calculate_price(base_quantity, quote_quantity, base_divisibility, quote_divi
     if not quote_divisibility:
         quote_quantity *= config.UNIT
 
-    return float(quote_quantity) / float(base_quantity)
+    try:
+        return float(quote_quantity) / float(base_quantity)
+    except Exception, e:
+        return 0
 
 def format_price(base_quantity, quote_quantity, base_divisibility, quote_divisibility):
     price = calculate_price(base_quantity, quote_quantity, base_divisibility, quote_divisibility)
