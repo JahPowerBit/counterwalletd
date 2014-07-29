@@ -210,9 +210,9 @@ def get_market_orders(asset1, asset2, addresses=[], supplies=None, min_fee_provi
             try:
                 fee_provided = order['fee_provided'] / (order['give_quantity'] / 100)
                 user_order['fee_provided'] = format(D(order['fee_provided']) / (D(order['give_quantity']) / D(100)), '.2f') 
-                fee_provided = min_fee_provided - 1 # exclude
             Exception, e:
-
+                fee_provided = min_fee_provided - 1 # exclude
+                
             exclude = fee_provided < min_fee_provided
 
         elif order['get_asset'] == 'BTC':
