@@ -207,14 +207,23 @@ def get_market_orders(asset1, asset2, addresses=[], supplies=None, min_fee_provi
 
         exclude = False
         if order['give_asset'] == 'BTC':
-            fee_provided = order['fee_provided'] / (order['give_quantity'] / 100)
+            try:
+                fee_provided = order['fee_provided'] / (order['give_quantity'] / 100)
+                user_order['fee_provided'] = format(D(order['fee_provided']) / (D(order['give_quantity']) / D(100)), '.2f') 
+                fee_provided = min_fee_provided - 1 # exclude
+            Exception, e:
+
             exclude = fee_provided < min_fee_provided
-            user_order['fee_provided'] = format(D(order['fee_provided']) / (D(order['give_quantity']) / D(100)), '.2f') 
 
         elif order['get_asset'] == 'BTC':
-            fee_required = order['fee_required'] / (order['get_quantity'] / 100)
+            try:
+                fee_required = order['fee_required'] / (order['get_quantity'] / 100)
+                user_order['fee_required'] = format(D(order['fee_required']) / (D(order['get_quantity']) / D(100)), '.2f')
+            Exception, e:
+                fee_required = max_fee_required + 1 # exclude
+            
             exclude = fee_required > max_fee_required
-            user_order['fee_required'] = format(D(order['fee_required']) / (D(order['get_quantity']) / D(100)), '.2f')
+            
         
         if not exclude:
             if order['give_asset'] == base_asset:
